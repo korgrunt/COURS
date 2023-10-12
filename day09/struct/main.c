@@ -80,7 +80,7 @@ Node* deleteElementFromList(Node* list, int pos){
     int counter = 0;
     while(counter <= pos){
         printf("\nWe are at counter %d \n", counter);
-        printf("\nWe are at pos %d \n", pos);
+        printf("We are at pos %d \n", pos);
         if(tmp->next != NULL && counter == pos-1){
             Node * slice = tmp->next; // slice should be delete
             if(slice->next != NULL){
@@ -130,7 +130,9 @@ int main(int argc, char * argv[]){
 
 
     printf("My fisrt node is of val %d \n", elm->val);
-    elm = insertElementAtStart(elm, -1);
+    for(int i = 0; i < 1000; i++){
+        elm = insertElementAtStart(elm, i * i);
+    }
 
     printf("My fisrt node is now of val %d \n", elm->val);
     readListAtPositionN(elm, 2);
@@ -141,6 +143,13 @@ int main(int argc, char * argv[]){
 
     readListAtPositionN(elm, 2);
     printf("\n\n Size of liste is currently %d \n", getSizeList(elm));
+
+    while(elm->next != NULL){
+        elm = deleteElementFromList(elm, getSizeList(elm) - 1);
+    }
+
+      free(elm);
+
 
     return 0;
 
