@@ -122,8 +122,8 @@ int getSizeList(Node* list){
 }
 
 int main(int argc, char * argv[]){
-
-    Node* elm = createChainedList(1);
+    Node* elm = NULL;
+    elm = createChainedList(1);
     //    -1__1__2__
     printf("My fisrt node is of val %d \n", elm->val);
     elm = insertElementAtEnd(elm, 2);  

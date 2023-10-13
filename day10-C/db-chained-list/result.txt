@@ -1,0 +1,77 @@
+My fisrt node is of val 1 
+My fisrt node is of val 1 
+My fisrt node is now of val 196 
+READ LIST NOW ________
+Position 0, has a node of 196
+Position 1, has a node of 169
+
+
+ THE Position asked  2, has a node of 144
+
+Position 2, has a node of 144
+Position 3, has a node of 121
+Position 4, has a node of 100
+Position 5, has a node of 81
+Position 6, has a node of 64
+Position 7, has a node of 49
+Position 8, has a node of 36
+Position 9, has a node of 25
+Position 10, has a node of 16
+Position 11, has a node of 9
+Position 12, has a node of 4
+Position 13, has a node of 1
+Position 14, has a node of 0
+Position 15, has a node of 1
+Position 16, has a node of 2
+
+
+ Size of liste is currently 17 
+READ LIST NOW ________
+Position 0, has a node of 196
+Position 1, has a node of 169
+
+
+ THE Position asked  2, has a node of 144
+
+Position 2, has a node of 144
+Position 3, has a node of 121
+Position 4, has a node of 100
+Position 5, has a node of 81
+Position 6, has a node of 64
+Position 7, has a node of 49
+Position 8, has a node of 36
+Position 9, has a node of 25
+Position 10, has a node of 16
+Position 11, has a node of 9
+Position 12, has a node of 4
+Position 13, has a node of 1
+Position 14, has a node of 0
+Position 15, has a node of 1
+Position 16, has a node of 2
+
+We are at counter 0 
+We are at pos 1 
+READ LIST NOW ________
+Position 0, has a node of 196
+Position 1, has a node of 144
+
+
+ THE Position asked  2, has a node of 121
+
+Position 2, has a node of 121
+Position 3, has a node of 100
+Position 4, has a node of 81
+Position 5, has a node of 64
+Position 6, has a node of 49
+Position 7, has a node of 36
+Position 8, has a node of 25
+Position 9, has a node of 16
+Position 10, has a node of 9
+Position 11, has a node of 4
+Position 12, has a node of 1
+Position 13, has a node of 0
+Position 14, has a node of 1
+Position 15, has a node of 2
+
+
+ Size of liste is currently 16 
