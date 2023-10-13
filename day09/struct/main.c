@@ -148,7 +148,7 @@ int main(int argc, char * argv[]){
         elm = deleteElementFromList(elm, getSizeList(elm) - 1);
     }
 
-      free(elm);
+    free(elm);
 
 
     return 0;
