@@ -1,0 +1,28 @@
+ - Echanger des informations dans les deux sens :
+ 	- > Client vers serveur (et afficher !)
+ 	- > Serveur vers client  (et afficher !)
+ 	
+ Serveur HTTP basique :
+ 	- HTTP/1.1
+ 	- JAVA
+ 	- SANS LIB HTTP !
+ 	a) récupérer la requête du client et l'afficher dans le terminal
+ 		- GET : sur un index.html
+ 		- GET : sur une erreur
+ 		- GET : sur un PDF
+ 		- GET : sur un PNG/JPEG/etc.
+ 	b) forger l'entête HTTP  
+ 		- Statut HTTP
+ 		- autres champs oligatoires
+	c) renvoyer la page demandée (ou une page par défaut)
+	d) Validation ? affichage correcte dans un navigateur web classique
+--> Rendu :
+	- Envoyer les sources par mail à 
+		-- damien.gros@cea.fr
+		-- sujet:  ESIEA - serveur HTTP
+		
+		
+		
+		
+		
+		
