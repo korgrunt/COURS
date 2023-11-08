@@ -1,0 +1,19 @@
+An embedded signature with 5 blobs:
+Code Directory (795 bytes)
+		Version:     20400
+		Flags:       none
+		CodeLimit:   0xd2e0
+		Identifier:  org.gotohack.HelloWorld (@0x58)
+		Team ID:     XX273ASN4V (@0x70)
+		Executable Segment: Base 0x00000000 Limit: 0x00000000 Flags: 0x00000000
+		CDHash:	     d6dd635bbeeed90e3ca5cca54878abcdb90b95f359001443afe23a6e328c73be (computed)
+		# of hashes: 14 code (4K pages) + 7 special
+		Hashes @347 size: 32 Type: SHA-256
+Requirement Set (188 bytes) with 1 requirement:
+		0: Designated Requirement (@20, 156 bytes): Ident(org.gotohack.HelloWorld) AND Apple Generic Anchor Cert field [subject.CN] = 'Apple Distribution: Mathieu Renard (XX273ASN4V)' AND (Cert Generic[1] = WWD Relations CA) 
+Entitlements (398 bytes) (use --ent to view)
+Entitlements DER (151 bytes)
+Blob Wrapper (4794 bytes) (0x10000 is CMS (RFC3852) signature)
+		CA: Apple Certification Authority 	CN: Apple Root CA
+		CA: Apple Certification Authority 	CN: Apple Root CA
+		Timestamp: 20:33:32 2023/03/05

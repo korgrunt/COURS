@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="2022-10-31-IcedID-with-DarkVNC-and-Cobalt-Strike-full-pcap-raw.pcap">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/suricata/data/2022-10-31-IcedID-with-DarkVNC-and-Cobalt-Strike-full-pcap-raw.pcap.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

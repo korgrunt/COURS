@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="emerging.rules">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/suricata/suricata-update/tests/emerging.rules.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
