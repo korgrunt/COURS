@@ -1,0 +1,72 @@
+   Compiling openssl-sys v0.6.7
+   Compiling rand v0.3.23
+The following warnings were emitted during compilation:
+
+warning: src/openssl_shim.c:1:10: fatal error: openssl/hmac.h: No such file or directory
+warning:     1 | #include <openssl/hmac.h>
+warning:       |          ^~~~~~~~~~~~~~~~
+warning: compilation terminated.
+
+error: failed to run custom build command for `openssl-sys v0.6.7`
+
+Caused by:
+  process didn't exit successfully: `/home/naouaichia/Workspace/COURS/rust/target/debug/build/openssl-sys-dc1de5d7ce9da2ee/build-script-build` (exit status: 101)
+  --- stdout
+  cargo:rerun-if-env-changed=OPENSSL_NO_PKG_CONFIG
+  cargo:rerun-if-env-changed=PKG_CONFIG_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG
+  cargo:rerun-if-env-changed=PKG_CONFIG
+  cargo:rerun-if-env-changed=OPENSSL_STATIC
+  cargo:rerun-if-env-changed=OPENSSL_DYNAMIC
+  cargo:rerun-if-env-changed=PKG_CONFIG_ALL_STATIC
+  cargo:rerun-if-env-changed=PKG_CONFIG_ALL_DYNAMIC
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_PATH
+  cargo:rerun-if-env-changed=PKG_CONFIG_PATH
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_LIBDIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64-unknown-linux-gnu
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64_unknown_linux_gnu
+  cargo:rerun-if-env-changed=HOST_PKG_CONFIG_SYSROOT_DIR
+  cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR
+  cargo:rustc-link-lib=dylib=ssl
+  cargo:rustc-link-lib=dylib=crypto
+  TARGET = Some("x86_64-unknown-linux-gnu")
+  OPT_LEVEL = Some("0")
+  TARGET = Some("x86_64-unknown-linux-gnu")
+  HOST = Some("x86_64-unknown-linux-gnu")
+  TARGET = Some("x86_64-unknown-linux-gnu")
+  TARGET = Some("x86_64-unknown-linux-gnu")
+  HOST = Some("x86_64-unknown-linux-gnu")
+  CC_x86_64-unknown-linux-gnu = None
+  CC_x86_64_unknown_linux_gnu = None
+  HOST_CC = None
+  CC = None
+  HOST = Some("x86_64-unknown-linux-gnu")
+  TARGET = Some("x86_64-unknown-linux-gnu")
+  HOST = Some("x86_64-unknown-linux-gnu")
+  CFLAGS_x86_64-unknown-linux-gnu = None
+  CFLAGS_x86_64_unknown_linux_gnu = None
+  HOST_CFLAGS = None
+  CFLAGS = None
+  DEBUG = Some("true")
+  running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-m64" "-Wall" "-Wextra" "-o" "/home/naouaichia/Workspace/COURS/rust/target/debug/build/openssl-sys-bdf7332f19705386/out/src/openssl_shim.o" "-c" "src/openssl_shim.c"
+  cargo:warning=src/openssl_shim.c:1:10: fatal error: openssl/hmac.h: No such file or directory
+  cargo:warning=    1 | #include <openssl/hmac.h>
+  cargo:warning=      |          ^~~~~~~~~~~~~~~~
+  cargo:warning=compilation terminated.
+  exit status: 1
+
+  --- stderr
+  thread 'main' panicked at /home/naouaichia/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gcc-0.3.55/src/lib.rs:1672:5:
+
+
+  Internal error occurred: Command "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-m64" "-Wall" "-Wextra" "-o" "/home/naouaichia/Workspace/COURS/rust/target/debug/build/openssl-sys-bdf7332f19705386/out/src/openssl_shim.o" "-c" "src/openssl_shim.c" with args "cc" did not execute successfully (status code exit status: 1).
+
+
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: build failed, waiting for other jobs to finish...
