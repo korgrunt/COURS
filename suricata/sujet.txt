@@ -1,0 +1,60 @@
+================
+Analyse Suricata
+================
+
+Objectif
+========
+
+Le but est la crÃ©ation d'un programme qui prend comme argument un fichier pcap ou un fichier JSON
+produit par Suricata et sort un rapport au format texte ou JSON contenant les informations principales
+Ã  propos de la trace rÃ©seau.
+
+Dans le cas de l'entrÃ©e d'un fichier pcap, Suricara sera lancÃ© avec les rÃ¨gles ETOpen pour
+produire le JSON analysÃ© par le programme (https://rules.emergingthreats.net/open/suricata-5.0/emerging-all.rules).
+
+
+La langue de programmation sera l'anglais et le language de programmation est laissÃ© Ã  la
+discrÃ©tion de l'Ã©tudiant.
+
+Le rendu sera une archive comprenant le code correctement commentÃ©, une documentation de son
+utilisation (et de l'installation et de la compilation si nÃ©cessaire).
+Il incluera Ã©galement une sortie rÃ©alisÃ©e sur le fichier pcap
+de Malware Traffic Analsyis https://www.malware-traffic-analysis.net/2023/10/31/index.html <--- pcap  2023-10-31-IcedID-infection-traffic.pcap.zip   4.8 MB   (4,836,051 bytes) ou autre
+
+
+On pourra utiliser les informations du livre "The Security Analystâ€™s Guide to Suricata"
+(https://github.com/StamusNetworks/suricata-4-analysts).
+
+tout est dans le eve.json 
+
+
+VisibilitÃ©
+==========
+
+0. DÃ©terminer et afficher le timestamp des premiÃ¨res et derniÃ¨res donnÃ©es contenues dans le fichier
+
+1. DÃ©terminer et afficher si des adresses IP privÃ©es sont utilisÃ©es dans le pcap
+
+2. Si des adresses IP privÃ©es sont utilisÃ©es, afficher les rÃ©seaux utilisÃ©s avec leur netmask.
+
+3. En utilisant les requÃªtes DNS, afficher la liste des domaines Windows prÃ©sent dans la trace. Lister Ã©galement, le controleur de domaine.
+(The Security Analystâ€™s Guide to Suricata)
+
+4. Afficher le nom des utilisateurs extrait des requÃªtes SMB et Kerberos
+
+5. Pour les IPs du rÃ©seau interne, extraire et afficher les versions probables des systÃ¨mes d'exploitation en utilisant les requÃªtes SMB
+
+6. Afficher les services TCP/IP offert sur le rÃ©seau avec leur protocol applicatif ou Ã  dÃ©faut leur port. On pourra utiliser les Ã©vÃ©nements de type flow.
+
+DÃ©tection des menaces
+=====================
+
+0. Lister les signatures uniques ayant alertÃ©s sur le pcap
+
+1. En utilisant les metadata des signatures alertant sur le pcap, afficher la liste des malwares dÃ©tectÃ©es
+
+2. Lister les adresses internes impactÃ©es par les malwares
+
+3. Extraire et afficher la liste des IOCs (hostname, IPs) associÃ©s aux alertes sur les malwares
+
+4. Utiliser la correlation par flow_id et tx_id pour extraire la liste des IOCs (hashes de fichiers) associÃ©s aux alertes sur les malwares
