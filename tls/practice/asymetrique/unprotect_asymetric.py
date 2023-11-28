@@ -10,8 +10,51 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256, HMAC
-from Crypto.Util.Padding import pad
+from Crypto.Util.Padding import pad, unpad
 from Crypto.Signature import pss
+
+def hexdump_bytes(tableau_bytes):
+    for i in range(0, len(tableau_bytes), 16):
+        ligne = tableau_bytes[i:i + 16]
+        hex_string = ' '.join(f'{byte:02x}' for byte in ligne)
+        ascii_string = ''.join(chr(byte) if 32 <= byte < 127 else '.' for byte in ligne)
+        print(f'{i:08x}: {hex_string.ljust(48)}  {ascii_string}')
+
+separator_file = b'\xa1\xb2\xc3\xd4'
+def decouper_par_separateur(tableau_bytes, separateur=b'\xa1\xb2\xc3\xd4'):
+    longueur_tableau = len(tableau_bytes)
+
+    result = [0] * 4
+    last_slice = 0
+    result_idx = 0
+    for i in range(longueur_tableau - 1):
+        print("tableau_bytes[i:i+4]")
+        hexdump_bytes(tableau_bytes[i:i+4])
+        if(result_idx == 3):
+            break
+        if(tableau_bytes[i:i+4] == separateur):
+            print("result_idx")
+            print(result_idx)
+            result[result_idx] = tableau_bytes[last_slice:i]
+            i = i + 4
+            last_slice = i 
+            result_idx = result_idx + 1
+
+    print("result")
+    print(result)
+
+    for i in range(len(result)):
+        print("result[i]")
+        print(result[i])
+
+    if(result_idx != 3):
+        print("Can't parse correctly input file")
+        exit(1)
+
+    
+    return result
+
+
 
 def derivpassword(password: bytes, salt: bytes, counter: int):
 
@@ -28,6 +71,7 @@ def derivpassword(password: bytes, salt: bytes, counter: int):
         password_hi = SHA256.new(password_h0 + password + salt + counter_bytes).digest()
         #Update hi_minus_1 for the next iteration
         password_h0 = password_hi
+    
 
     #Return the first 32 bytes
     return password_hi[:32]
@@ -91,43 +135,65 @@ def protect_file_asym(password, input_filename, output_filename):
     print("hrrllo")
 
 def main():
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Need three arg please, commmand reminder $> python3 protect_asymetric.py <password> <input_file> <output_file> ")
         sys.exit(1)
 
 
     #chifré en sym et récupérer C, Kc, iv,
-    password = sys.argv[1]
-    input_filename = sys.argv[2]
-    output_filename = sys.argv[3]
+    public_sign_filename = sys.argv[1]
+    private_cypher_filename = sys.argv[2]
+    input_filename = sys.argv[3]
+    output_filename = sys.argv[4]
     
-    data_returned = protect_file_sym(password, input_filename, output_filename)
-
     # généré deux bi clée du destinataire, même si en pratque, le destinataire nous envoir uniqument sa clée public et garde la clee privee de sont coté
-    
+    # cela a été fait précedement dans le script python protect, on e le refait pas a nouveau
     # une bi clée pour signer qui appartient a l'envoyeur, l'envoyeur partage sa clée public
-    key_sign = RSA.generate(2048)
-    private_sign_key = key_sign.export_key()
-    file_out = open("private_sign.pem", "wb")
-    file_out.write(private_sign_key)
-    file_out.close()
 
-    public_sign_key = key_sign.publickey().export_key()
-    file_out = open("public_sign.pem", "wb")
-    file_out.write(public_sign_key)
-    file_out.close()
+    # recuppératio de la clée rsa public pour veifier signature
 
-    # une bi clée pour chiffrer, qui appartient au receveur, le receveur partage sa clée public
-    key_cypher = RSA.generate(2048)
-    private_cypher_key = key_cypher.export_key()
-    file_out = open("private_cypher.pem", "wb")
-    file_out.write(private_cypher_key)
-    file_out.close()
 
-    public_cypher_key = key_cypher.publickey().export_key()
-    file_out = open("public_cypher.pem", "wb")
-    file_out.write(public_cypher_key)
-    file_out.close()
+    # recuppératio de la clée rsa pour privé pour déchifrer le sequestre
+    
+
+    input_file_bytes = open(input_filename, "rb").read()
+
+    print("okok is sliced")
+
+    
+    encrypted_kc_as_sequestre = input_file_bytes[:256]
+    cypher_content = input_file_bytes[256:-48]
+    iv = input_file_bytes[-48:-32]
+    signature = input_file_bytes[-32:]
+    
+    print(len(encrypted_kc_as_sequestre))
+    decrypt_sequestre_key_priv = RSA.import_key(open(private_cypher_filename, "rb").read())
+    cipher = PKCS1_OAEP.new(decrypt_sequestre_key_priv)
+    kc = cipher.decrypt(input_file_bytes[:256])
+    print("message.decode()")
+
+    cipher = AES.new(kc, AES.MODE_CBC, iv)
+    pt = unpad(cipher.decrypt(cypher_content), AES.block_size)
+    print(pt)
+
+
+
+    key_sign_verif = RSA.import_key(open(public_sign_filename, "rb").read())
+    h = SHA256.new(input_file_bytes[:-32])
+
+    verifier = pss.new(key_sign_verif)
+    try:
+        verifier.verify(h, signature)
+        print("The signature is authentic.")
+    except (ValueError, TypeError):
+        print ("The signature is not authentic.")
+
+
+
+    exit(0)
+
+
+    data_returned = protect_file_sym(password, input_filename, output_filename)
 
     # générer le sequestre qui contient Kc, via la clée clée public de chiffrement 
     recipient_key = RSA.import_key(open("public_cypher.pem").read())
