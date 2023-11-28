@@ -1,0 +1,19 @@
+Ecrire un logiciel de chiffrement.
+
+qui protege un fichie ren confidentialité et en intégrité.
+
+iL L'ENVOI A UN DESTINATAIRE,
+
+PROTEGER LE FICHIER 
+sIGNE RLE FICHIER
+
+LE FORMAT, C'EST 
+0x00 || SHA256(k-pub1)  || RSA_k-pub1(kc, iv) || 0x00 || SHA256(k-pub2)  || RSA_k-pub2(kc, iv) || 0x00 || SHA256(k-pub3)  || RSA_k-pub3(kc, iv)
+|| 0x00 || SHA256(k-pubN)  || RSA_k-pubN(kc, iv) || 0x01 || C || S 
+
+pas de venv, pycache, python3, linux 86
+
+objet du mail:[MSSIS_2324_crypto] Aouaichia Naim
+mail: olivier.tuchon+MSSIS2324@gmail.com
+
+a rendre 22 decembre 2023 - 23h59 (GMT+1)
