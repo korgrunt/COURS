@@ -1,0 +1,49 @@
+Cisco IOS syntax
+____________________________________________________
+
+!  #-- bang
+version 12 #-- version
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption #-- toute ligne qui contiendra un mot de passe sera chiffré
+!
+hostname conf.test
+!
+enable secret 5 A90yU2dikklkdNJnol #-- mot de passe administration, avec 5, qui indique que c'st un hash md5
+!
+interface FastEthernet0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+ no keepalive
+! 
+interface GigabitEthernet0/0 #--on attend les acl avec un block content viru, pour l etraffc in
+ ip address 20.0.68.45 255.255.255.0
+ ip access-group BLOCK_VIRU in # l'acl BLOCK_VIRU est appelé, mais n'existe pas
+ no ip proxy-arp
+!
+interface GigabitEthernet0/1
+ no ip address
+!
+ip access-list extended BLOCK_VIRUS # cette acl est definie BLOCK_VIRUS
+ deny   77 any any # conf protocol ip_src ip_dest, 
+ permit ip any any
+!
+access-list 23 permit 10.0.168.143
+access-list 24 permit 10.0.168.133
+!
+snmp-server community esiea RW 43 # protocol snmp-server en RW (read write) mais on emet toujours RO pour empécher la modification, snmp est simple network management protocol, utilisé pour l'échange d'informations de gestion entre les périphériques réseau. avec esiea qui est le nom de la commauté, sur le port 43
+!
+line con 0 # console physique pour se connecter
+ password 7 04876346151
+line aux 0 # console physique pour se connecter
+ access-class 33 in
+ password 7 04876346151
+ transport input all
+line vty 0 3 # console virtuel pour se connecter, en ss par exemple, avec 4 session utilisateur simultané, 0, 1, 2, 3
+ access-class 24 out
+ transport input telnet # telent autorisé a rentrer en connexion distante, ssl par exemple
+ transport output telnet # telent autorisé a sortire en connexion distante, ssl par exemple
+! # il manque un mot d passe dans conf, ce qui fait qu'on peut rentrer sans mot de passe
+end
