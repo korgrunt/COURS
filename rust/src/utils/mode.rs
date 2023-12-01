@@ -6,4 +6,5 @@ use clap::{ValueEnum};
 pub enum Mode {
     Disassembler,
     Assembler,
+    Runner,
 }

@@ -4,12 +4,14 @@ use crate::utils::disassembler::disassemble;
 use crate::utils::disassembler::pretty_print;
 use crate::utils::mode::Mode;
 use clap::Parser;
+use vm::Vm;
 use std::fs::File;
 //use utils::disassembler::pretty;
 use std::fs::read_to_string;
 use std::io::Write;
 
-
+mod stack;
+mod vm;
 mod utils;
 
 #[derive(Parser, Debug)]
@@ -34,7 +36,11 @@ fn main(){
 
     
     match args.mode {
-
+        Mode::Runner => {
+            let instructions: Vec<Instruction> = disassemble(&args.path);
+            let mut vm = Vm::new(instructions);
+            vm.run();
+        }
         Mode::Disassembler => {
             let disassembly: Vec<Instruction> = disassemble(&args.path);
             pretty_print(&disassembly);
@@ -132,6 +138,7 @@ fn main(){
     
 
 }
+
 
 
 

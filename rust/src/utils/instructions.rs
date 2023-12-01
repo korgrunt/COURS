@@ -22,6 +22,8 @@ pub enum Instruction {
     Jnz(u32),// jump to instruction if top of the stack is not 0
     
     Halt,// Stop the vm
-    
+    JumpLessThan(u32),
+    Label(u32), // some label in the assembler, 
+    RelativeJump(u32),
     Unknown,
 }
