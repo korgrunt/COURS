@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "md4.h": "c",
+        "stdint.h": "c",
+        "random": "c"
+    }
+}
