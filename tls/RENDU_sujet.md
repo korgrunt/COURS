@@ -52,5 +52,5 @@ d'executable ou de fichier objets issus de compilation
 - assurez vous que vos projets fonctionnent chez moi (linux x86_64, python3)
 
 date de reception (max) : 22/12/2023 @ 23:59 (GMT+1  -- HEURE FRANCAISE)
-subject : [MSSIS_2324_crypto]
+subject : [MSSIS_2324_crypto] Naim Aouaichia - cryptographie appliquée
 mail : olivier.tuchon+MSSIS2324@gmail.com

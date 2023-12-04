@@ -2,3 +2,4 @@ venv/
 **/*.ova
 target
 .git
+.idea
