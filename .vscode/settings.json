@@ -1,5 +1,9 @@
 {
     "rust-analyzer.linkedProjects": [
         "./rust3/Cargo.toml"
-    ]
+    ],
+    "files.associations": {
+        "cstdint": "c",
+        "stdio.h": "c"
+    }
 }

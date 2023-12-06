@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdint.h>
 
 #include "../includes/config.h"
 
@@ -16,9 +15,7 @@ int main(int argc, char **argv)
 
 
   candidate[PWD_LEN] = 0;
-  uint32_t candidate [4];
-
-
+  
 
 
 
