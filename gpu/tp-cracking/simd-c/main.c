@@ -4,13 +4,14 @@
 
 #include "../includes/config.h"
 #include "md4.h"
+#include <emmintrin.h>
 
 /*
  * The MD4 transformation for all three rounds.
  */
 #define STEP(f, a, b, c, d, x, s) \
-  (a) += f((b), (c), (d)) + (x);  \
-  (a) = (((a) << (s)) | (((a) & 0xffffffff) >> (32 - (s))));
+  (a) += _mm_add_epi32(f((b), (c), (d)),(x));  \
+  (a) = (((_mm_slli_epi32((a), (s)))) | (_mm_srli_epi32(((a) & 0xffffffff),(32 - (s)))));
 
 /*
  * The basic MD4 functions.
@@ -41,68 +42,73 @@
 #define GET(n) (ptr[n])
 #endif
 
-void my_body(unsigned char *candidate, uint32_t *res)
+void my_body(unsigned char *candidate, __m128i *res, unsigned char *target)
 {
-  uint32_t a, b, c, d;
+  __m128i a, b, c, d;
 
-  a = 0x67452301;
-  b = 0xefcdab89;
-  c = 0x98badcfe;
-  d = 0x10325476;
-  uint32_t *ptr = candidate;
+  a = _mm_set1_epi32(0x67452301);
+  b = _mm_set1_epi32(0xefcdab89);
+  c = _mm_set1_epi32(0x98badcfe);
+  d = _mm_set1_epi32(0x10325476);
+  unsigned char * ptr = candidate;
+  
 
-  STEP(F, a, b, c, d, SET(0), 3)
-  STEP(F, d, a, b, c, SET(1), 7)
-  STEP(F, c, d, a, b, SET(2), 11)
-  STEP(F, b, c, d, a, SET(3), 19)
-  STEP(F, a, b, c, d, SET(4), 3)
-  STEP(F, d, a, b, c, SET(5), 7)
-  STEP(F, c, d, a, b, SET(6), 11)
-  STEP(F, b, c, d, a, SET(7), 19)
-  STEP(F, a, b, c, d, SET(8), 3)
-  STEP(F, d, a, b, c, SET(9), 7)
-  STEP(F, c, d, a, b, SET(10), 11)
-  STEP(F, b, c, d, a, SET(11), 19)
-  STEP(F, a, b, c, d, SET(12), 3)
-  STEP(F, d, a, b, c, SET(13), 7)
-  STEP(F, c, d, a, b, SET(14), 11)
-  STEP(F, b, c, d, a, SET(15), 19)
+  STEP(F, a, b, c, d, _mm_set1_epi32(ptr[0]), 3)
+  STEP(F, d, a, b, c, _mm_set1_epi32(ptr[1]), 7)
+  STEP(F, c, d, a, b, _mm_set1_epi32(ptr[2]), 11)
+  STEP(F, b, c, d, a, _mm_set1_epi32(ptr[3]), 19)
+  STEP(F, a, b, c, d, _mm_set1_epi32(ptr[4]), 3)
+  STEP(F, d, a, b, c, _mm_set1_epi32(ptr[5]), 7)
+  STEP(F, c, d, a, b, _mm_set1_epi32(ptr[6]), 11)
+  STEP(F, b, c, d, a, _mm_set1_epi32(ptr[7]), 19)
+  STEP(F, a, b, c, d, _mm_set1_epi32(ptr[8]), 3)
+  STEP(F, d, a, b, c, _mm_set1_epi32(ptr[9]), 7)
+  STEP(F, c, d, a, b, _mm_set1_epi32(ptr[10]), 11)
+  STEP(F, b, c, d, a, _mm_set1_epi32(ptr[11]), 19)
+  STEP(F, a, b, c, d, _mm_set1_epi32(ptr[12]), 3)
+  STEP(F, d, a, b, c, _mm_set1_epi32(ptr[13]), 7)
+  STEP(F, c, d, a, b, _mm_set1_epi32(ptr[14]), 11)
+  STEP(F, b, c, d, a, _mm_set1_epi32(ptr[15]), 19)
+
+  __m128i val = _mm_set1_epi32(0x5a827999);
+  __m128i valSecond = _mm_set1_epi32(0x6ed9eba1);
 
   /* Round 2 */
-  STEP(G, a, b, c, d, GET(0) + 0x5a827999, 3)
-  STEP(G, d, a, b, c, GET(4) + 0x5a827999, 5)
-  STEP(G, c, d, a, b, GET(8) + 0x5a827999, 9)
-  STEP(G, b, c, d, a, GET(12) + 0x5a827999, 13)
-  STEP(G, a, b, c, d, GET(1) + 0x5a827999, 3)
-  STEP(G, d, a, b, c, GET(5) + 0x5a827999, 5)
-  STEP(G, c, d, a, b, GET(9) + 0x5a827999, 9)
-  STEP(G, b, c, d, a, GET(13) + 0x5a827999, 13)
-  STEP(G, a, b, c, d, GET(2) + 0x5a827999, 3)
-  STEP(G, d, a, b, c, GET(6) + 0x5a827999, 5)
-  STEP(G, c, d, a, b, GET(10) + 0x5a827999, 9)
-  STEP(G, b, c, d, a, GET(14) + 0x5a827999, 13)
-  STEP(G, a, b, c, d, GET(3) + 0x5a827999, 3)
-  STEP(G, d, a, b, c, GET(7) + 0x5a827999, 5)
-  STEP(G, c, d, a, b, GET(11) + 0x5a827999, 9)
-  STEP(G, b, c, d, a, GET(15) + 0x5a827999, 13)
+  STEP(G, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[0]) , val), 3)
+  STEP(G, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[4]) , val), 5)
+  STEP(G, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[8]) , val), 9)
+  STEP(G, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[12]) , val), 13)
+  STEP(G, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[1]) , val), 3)
+  STEP(G, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[5]) , val), 5)
+  STEP(G, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[9]) , val), 9)
+  STEP(G, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[13]) , val), 13)
+  STEP(G, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[2]) , val), 3)
+  STEP(G, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[6]) , val), 5)
+  STEP(G, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[10]) , val), 9)
+  STEP(G, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[14]) , val), 13)
+  STEP(G, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[3]) , val), 3)
+  STEP(G, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[7]) , val), 5)
+  STEP(G, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[11]) , val), 9)
+  STEP(G, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[15]) , val), 13)
 
   /* Round 3 */
-  STEP(H, a, b, c, d, GET(0) + 0x6ed9eba1, 3)
-  STEP(H2, d, a, b, c, GET(8) + 0x6ed9eba1, 9)
-  STEP(H, c, d, a, b, GET(4) + 0x6ed9eba1, 11)
-  STEP(H2, b, c, d, a, GET(12) + 0x6ed9eba1, 15)
-  STEP(H, a, b, c, d, GET(2) + 0x6ed9eba1, 3)
-  STEP(H2, d, a, b, c, GET(10) + 0x6ed9eba1, 9)
-  STEP(H, c, d, a, b, GET(6) + 0x6ed9eba1, 11)
-  STEP(H2, b, c, d, a, GET(14) + 0x6ed9eba1, 15)
-  STEP(H, a, b, c, d, GET(1) + 0x6ed9eba1, 3)
-  STEP(H2, d, a, b, c, GET(9) + 0x6ed9eba1, 9)
-  STEP(H, c, d, a, b, GET(5) + 0x6ed9eba1, 11)
-  STEP(H2, b, c, d, a, GET(13) + 0x6ed9eba1, 15)
-  STEP(H, a, b, c, d, GET(3) + 0x6ed9eba1, 3)
-  STEP(H2, d, a, b, c, GET(11) + 0x6ed9eba1, 9)
-  STEP(H, c, d, a, b, GET(7) + 0x6ed9eba1, 11)
-  STEP(H2, b, c, d, a, GET(15) + 0x6ed9eba1, 15)
+  STEP(H, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[0]) , valSecond), 3)
+  STEP(H2, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[8]) , valSecond), 9)
+  STEP(H, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[4]) , valSecond), 11)
+  STEP(H2, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[12]) , valSecond), 15)
+  STEP(H, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[2]) , valSecond), 3)
+  STEP(H2, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[10]) , valSecond), 9)
+  STEP(H, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[6]) , valSecond), 11)
+  STEP(H2, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[14]) , valSecond), 15)
+  STEP(H, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[1]) , valSecond), 3)
+  STEP(H2, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[9]) , valSecond), 9)
+  STEP(H, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[5]) , valSecond), 11)
+  STEP(H2, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[13]) , valSecond), 15)
+  STEP(H, a, b, c, d, _mm_add_epi32(_mm_set1_epi32(ptr[3]) , valSecond), 3)
+  STEP(H2, d, a, b, c, _mm_add_epi32(_mm_set1_epi32(ptr[11]) , valSecond), 9)
+  STEP(H, c, d, a, b, _mm_add_epi32(_mm_set1_epi32(ptr[7]) , valSecond), 11)
+  STEP(H2, b, c, d, a, _mm_add_epi32(_mm_set1_epi32(ptr[15]) , valSecond), 15)
+
   a += 0x67452301;
   b += 0xefcdab89;
   c += 0x98badcfe;
@@ -111,6 +117,11 @@ void my_body(unsigned char *candidate, uint32_t *res)
   res[1] = b;
   res[2] = c;
   res[3] = d;
+
+  __m128i is_same = _mm_cmpeq_epi32(_mm_set1_epi32(ptr), _mm_set1_epi32(target));
+  printf("V_mm_set1_epi32(alues): %d, %d, %d, %d\n", is_same[0], is_same[1], is_same[2], is_same[3]);
+
+
 }
 
 int main(int argc, char **argv)
@@ -163,7 +174,15 @@ int main(int argc, char **argv)
   gettimeofday(&tval, NULL);
   start = tval.tv_sec + tval.tv_usec / 1000000.0;
 
+/*
+  for(int i = 0; i < 256; i++){
+    printf("%02x", candidates[i]);
+    if((i+1)%16 == 0) {
+      printf("\n");
+    }
+  }
 
+*/
   
   do
   {
@@ -181,12 +200,11 @@ int main(int argc, char **argv)
 
 
 
-
     // MD4_CTX ctx;
     //    return 1;
     unsigned char res[16];
 
-    my_body(candidates, res);
+    my_body(candidates, res, target);
     /*
        MD4_Init(&ctx); // init a context, in update, their is lo and hi,
        MD4_Update(&ctx, candidate, PWD_LEN);

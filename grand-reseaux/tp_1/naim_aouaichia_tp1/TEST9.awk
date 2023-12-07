@@ -1,6 +1,15 @@
 awk ' 
 BEGIN {
     
+# 1ok   -La définition  d’une  « crypto-map » contenant 
+# 2ok      -au minimum un peer, 
+# 3      -une politique ipsec (« transform_set) 
+# 4      -un  filtrage  sur  les  adresses  ip  (« match  access-list-number).  
+# 5   -La  définition  de  la  dite  devra  être contrôlée.   
+# 6   -L’application  d’une  « crypto  map »  pour  toutes  les interfaces  de  type  « FastEthernet ». 
+
+#Ne  pas  confondre dans la configuration ^crypto[ ]map versus ^[ ]crypto[ ]map en accroche regex. 
+
 
 }
 {
@@ -41,7 +50,6 @@ BEGIN {
         fast_ethernet_has_crypto_map[FILENAME][this_fast_ethernet] = $3;
     }
 
-    
 } 
 END {
     print("TEST_NAME: TEST__9");  
@@ -63,8 +71,7 @@ END {
             if(file_has_conf_with_peer == 0) print crypto_map;
         }
         for (interface in fast_ethernet_has_crypto_map[file]){
-            
-            if(!(length(crypto_map_def[file][fast_ethernet_has_crypto_map[file][interface]]) > 0)) print "No declared crypto map used in " file " for interface " interface;
+            if(!((crypto_map_def[file][fast_ethernet_has_crypto_map[file][interface]]) == fast_ethernet_has_crypto_map[file][interface])) print "No corresponding declaration crypto map " fast_ethernet_has_crypto_map[file][interface] " used in " file " for interface " interface;
         }
         if(file_has_conf == 0) print "No configuation crypto map found in " file;
     }
