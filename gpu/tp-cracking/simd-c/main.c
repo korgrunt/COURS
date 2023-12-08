@@ -51,6 +51,37 @@ void printSSE(__m128i toprint){
   }
 
 }
+
+void extractBytesFromM128i(__m128i xmm, unsigned char *result, int start_range, int length) {
+    // Utilise un pointeur pour traiter xmm comme un tableau de 16 octets
+    unsigned char *xmmBytes = (unsigned char *)&xmm;
+
+    // Copie les 4 premiers octets dans le tableau de résultat
+    for (int i = start_range; i < start_range + length; i++) {
+        result[i] = xmm[i];
+    }
+}
+
+void concatArrays(const unsigned char* arr1,
+                  const unsigned char* arr2,
+                  const unsigned char* arr3,
+                  const unsigned char* arr4,
+                  size_t size,
+                  unsigned char* result) {
+    for (size_t i = 0; i < size; i++) {
+        result[i] = arr1[i];
+    }
+    for (size_t i = 0; i < size; i++) {
+        result[size + i] = arr2[i];
+    }
+    for (size_t i = 0; i < size; i++) {
+        result[2 * size + i] = arr3[i];
+    }
+    for (size_t i = 0; i < size; i++) {
+        result[3 * size + i] = arr4[i];
+    }
+}
+
 void my_body(unsigned char *candidate, __m128i *res, unsigned char *target)
 {
   __m128i a, b, c, d;
@@ -61,10 +92,7 @@ void my_body(unsigned char *candidate, __m128i *res, unsigned char *target)
   d = _mm_set1_epi32(0x10325476);
   unsigned char * ptr = candidate;
 
-  __m128i targetA = _mm_set1_epi32(target[0]);
-  __m128i targetB = _mm_set1_epi32(target[1]);
-  __m128i targetC = _mm_set1_epi32(target[2]);
-  __m128i targetD = _mm_set1_epi32(target[3]);
+
  
   STEP(F, a, b, c, d, _mm_set1_epi32(ptr[0]), 3)
   STEP(F, d, a, b, c, _mm_set1_epi32(ptr[1]), 7)
@@ -132,15 +160,64 @@ void my_body(unsigned char *candidate, __m128i *res, unsigned char *target)
   res[2] = c;
   res[3] = d;
 
+  __m128i targetA = _mm_set1_epi32(target[0]);
+  __m128i targetB = _mm_set1_epi32(target[1]);
+  __m128i targetC = _mm_set1_epi32(target[2]);
+  __m128i targetD = _mm_set1_epi32(target[3]);
 
   __m128i is_sameA = _mm_cmpeq_epi32(a, targetA);
   __m128i is_sameB = _mm_cmpeq_epi32(b, targetB);
   __m128i is_sameC = _mm_cmpeq_epi32(c, targetC);
   __m128i is_sameD = _mm_cmpeq_epi32(d, targetD);
 
-  
+
+    unsigned char result_a_part_1[4];
+    unsigned char result_a_part_2[4];
+    unsigned char result_a_part_3[4];
+    unsigned char result_a_part_4[4];
+
+
+
+    // Utilise la fonction pour extraire les 4 premiers octets
+    extractBytesFromM128i(res[0], result_a_part_1, 0, 4);
+    extractBytesFromM128i(res[1], result_a_part_1, 0, 4);
+    extractBytesFromM128i(res[2], result_a_part_1, 0, 4);
+    extractBytesFromM128i(res[3], result_a_part_1, 0, 4);
+//    extractBytesFromM128i(a, result_a_part_2, 4, 4);
+//    extractBytesFromM128i(a, result_a_part_3, 8, 4);
+//    extractBytesFromM128i(a, result_a_part_4, 12, 4);
+
+    
+  printf("\nin body \n");
   __m128i andOnAllSame = is_sameA & is_sameB & is_sameC & is_sameD;
+
+  printf("\n");
+    for (int i = 0; target[i] != '\0'; i++) {
+        printf("%02x", target[i]);
+    }
+
+  printf("\n");
+
+    printf("\n");
+    for (int i = 0; result_a_part_1[i] != '\0'; i++) {
+        printf("%02x", result_a_part_1[i]);
+    }
+    for (int i = 0; result_a_part_2[i] != '\0'; i++) {
+        printf("%02x", result_a_part_2[i]);
+    }
+    for (int i = 0; result_a_part_3[i] != '\0'; i++) {
+        printf("%02x", result_a_part_3[i]);
+    }
+      for (int i = 0; result_a_part_4[i] != '\0'; i++) {
+        printf("%02x", result_a_part_4[i]);
+    }
+
+
+  printf("___");
+  printf("\n");
+
   int wasEquals = _mm_movemask_epi8(andOnAllSame);
+  printf("\n%d\n", wasEquals);
   if(wasEquals == 1) {
     printf("end progrm \n");
 
@@ -182,7 +259,7 @@ int main(int argc, char **argv)
   memset(candidates, 0x00, 256);
 
   for(int i = 0; i < 4; i++){
-    candidates[56*4 + i*4] = PWD_LEN;
+    candidates[56*4 + i*4] = PWD_LEN * 8;
   }
 
 
@@ -228,9 +305,9 @@ int main(int argc, char **argv)
         candidates[(idx + (i*4)) + 16] = unitary_candidate_buffer[idx + 4];
       }
       printf("\n%s\n", unitary_candidate_buffer);
-      if(memcmp(unitary_candidate_buffer, "!!!!!a", PWD_LEN) == 0){
-        printf("%s", "found");
-        //exit(0);
+      if(memcmp(unitary_candidate_buffer, "!!!!!z", PWD_LEN) == 0){
+        printf("%s", "found in loop");
+        exit(0);
       }
       incr_candidate(unitary_candidate_buffer);
     }
