@@ -1,0 +1,465 @@
+Message clair Paillier (variante) : 4124912921768344188
+
+# Fonction pour calculer le L fonction de Paillier
+def L(x, N):
+    return (x - 1) // N
+
+# Déchiffrement Paillier variante
+def paillier_decrypt_variant(c, N):
+    # Calcul de lambda
+    factors = factor(N)
+    lambda_N2 = lcm(factors[0][0] - 1, factors[1][0] - 1)
+
+    # Calcul de mu
+    mu = power_mod(lambda_N2, -1, N)
+
+    # Calcul du chiffré original
+    c_lambda = power_mod(c, lambda_N2, N^2)
+
+    # Calcul du message original
+    m = L(c_lambda, N) * mu % N
+
+    return m
+
+# Exemple d'utilisation
+N = 4734297680650009741
+c = 19093528770978201454862189356390541947
+
+# Déchiffrer
+message_clair = paillier_decrypt_variant(c, N)
+
+# Afficher le résultat
+print("Message clair Paillier (variante) :", message_clair)
+
+
+
+########################################################################################################
+
+
+Pour la q16 quelqu'un a compris c'est quoi r dans la formule de c
+N il est facile à factoriser donc j'ai les deux nombres premiers :
+N =  4734297680650009741
+factors = factor(N)
+print("Facteurs premiers de N :", factors)
+
+########################################################################################################
+
+ y = g**x 
+puissance = int(math.log(y,g))
+
+while (g**puissance)%p != y:
+    puissance += 1
+print(puissance)
+
+
+########################################################################################################
+p =  158591840466078192103292679956926225296817591382572769733997
+q =  336795056318331208273554821918292914883902099698679862496909
+phi = (p-1)*(q-1)
+N = p*q
+e = 65539
+
+d = power_mod(e, -1, phi)
+
+print("Clé secrète: ", d)
+
+c = 44201984675730318221871361725606811637631589633213779473836865906018172583650993664256805046406574352000045752285433990
+
+m = power_mod(c,d,N)
+
+print("Message dechiffré: ", m)
+
+########################################################################################################
+
+p = 29
+generatrices = []
+
+for g in range(1, p):
+    is_generatrice = True
+    for k in range(1, p):
+        result = power_mod(g, k, p)
+        if result == 1 and k < (p-1):
+            is_generatrice = False
+            break
+        elif result == 1 and k == (p-1):
+            generatrices.append(g)
+            break
+
+print("Génératrices du groupe multiplicatif modulo 29 :", generatrices)
+
+
+########################################################################################################
+
+
+N =  [347711666465122811802552...,
+      576525628690753511005184...,
+      780296713104233659422219...,
+      774775452795318005477821...,
+      213852897436101108790518...,
+      356696797531342387054803...,
+      270076868275019969197979...,
+      133844779266468503356751...]
+
+for i in N:
+    for j in N:
+        denom = gcd(i,j)
+        if denom != i and denom != j and denom != 1 :            
+            print(i, " = ", i / denom, " x ", denom)
+
+
+########################################################################################################
+
+"""
+Q18) 2022 El Gamal
+"""
+p =  1427247692705959881058285969449495136382746771
+g =  2
+y =  719305856211759992839373328713694230156767614
+m =  399111583296812236281982681243350731663246749
+r =  210673141476054858463248256257135428764452973
+s=[846450106798224289027601662154232273327067600,119867992591240257835229717732139091719655150,1055292718101484732124367402374775410730216740,583083082312052499005034559875089796849070922,627016544004053248256159934062501254595619445,1160446104053011720080305532354008305466834303,708773455843445687745171017765435836179353521,417143029087802658728724996989601766226031390,791812121549216606984610652683754465187723993,190664076497346152286871653125605891873295976]
+
+from hashlib import sha256
+
+hash_m = int.from_bytes(sha256(str(m).encode()).digest())
+
+# Find q
+f = factor(p-1)
+qs = [q[0] for q in f if power_mod(g, (p-1)//q[0], p) != 1]
+q = min(qs)
+# Verify
+for elem in s:
+    a = Mod(hash_m//elem, q)
+    b = Mod(r//elem, q)
+    if Mod(g^a * y^b, q) == r:
+        print(elem)
+
+
+#############################################################
+
+fermat
+a^{p-1} congru 1  mod p
+
+
+########################################################################
+
+"""
+Q18) 2022 El Gamal
+"""
+p =  1427247692705959881058285969449495136382746771
+g =  2
+y =  719305856211759992839373328713694230156767614
+m =  399111583296812236281982681243350731663246749
+r =  210673141476054858463248256257135428764452973
+s=[846450106798224289027601662154232273327067600,119867992591240257835229717732139091719655150,1055292718101484732124367402374775410730216740,583083082312052499005034559875089796849070922,627016544004053248256159934062501254595619445,1160446104053011720080305532354008305466834303,708773455843445687745171017765435836179353521,417143029087802658728724996989601766226031390,791812121549216606984610652683754465187723993,190664076497346152286871653125605891873295976]
+
+from hashlib import sha256
+
+hash_m = int.from_bytes(sha256(str(m).encode()).digest())
+
+# Find q
+f = factor(p-1)
+qs = [q[0] for q in f if power_mod(g, (p-1)//q[0], p) != 1]
+q = min(qs)
+# Verify
+for elem in s:
+    a = Mod(hash_m//elem, q)
+    b = Mod(r//elem, q)
+    if Mod(g^a * y^b, q) == r:
+        print(elem)
+
+
+##############################################################################
+
+
+
+Q-17
+N =  [347711666465122811802552...,
+      576525628690753511005184...,
+      780296713104233659422219...,
+      774775452795318005477821...,
+      213852897436101108790518...,
+      356696797531342387054803...,
+      270076868275019969197979...,
+      133844779266468503356751...]
+
+for i in N:
+    for j in N:
+        denom = gcd(i,j)
+        if denom != i and denom != j and denom != 1 :            
+            print(i, " = ", i / denom, " x ", denom)
+
+
+##############################################################################
+
+Q-14
+ 
+p = 29
+generatrices = []
+
+for g in range(1, p):
+    is_generatrice = True
+    for k in range(1, p):
+        result = power_mod(g, k, p)
+        if result == 1 and k < (p-1):
+            is_generatrice = False
+            break
+        elif result == 1 and k == (p-1):
+            generatrices.append(g)
+            break
+
+print("Génératrices du groupe multiplicatif modulo 29 :", generatrices)
+
+
+##############################################################################
+
+def discrete_log_exhaustive(g, x, p):
+    # Essayer toutes les valeurs possibles de l'exposant y
+    for y in range(p):
+        if power_mod(g, y, p) == x:
+            return y
+
+    return None  # Pas de solution trouvée
+
+# Exemple d'utilisation
+p = 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397533
+g = 2
+x = 388129625821219829691941955565819605144511792098251764734096459800114779081071643574277074
+
+# Résoudre le logarithme discret de x en base g modulo p
+log_x = discrete_log_exhaustive(g, x, p)
+
+# Afficher le résultat
+print("Le logarithme discret de", x, "en base", g, "modulo", p, "est:", log_x)
+
+
+
+#####################################################################################
+
+Q-15 : J'ai trouvé x = 32867
+Méthode : bruteforce
+Temps d'exécution : ~10s
+Code :
+puissance = int(math.log(y,g))
+
+while (g**puissance)%p != y:
+    puissance += 1
+print(puissance)
+
+
+
+##################################################################################
+
+Pour Q-13 vous trouvez ça? 
+Clé secrète:  32162354836250681229434408645712343604806206508011043544587350786591299142425618572819587164728654345782764331907382827
+Message chiffré:  15054878675955938619441686507933950329334729452537234176406312337804999343496884536447191779265421988626968369128824042
+Code: 
+p =  158591840466078192103292679956926225296817591382572769733997
+q =  336795056318331208273554821918292914883902099698679862496909
+phi = (p-1)*(q-1)
+N = p*q
+e = 65539
+
+d = power_mod(e, -1, phi)
+
+print("Clé secrète: ", d)
+
+c = 44201984675730318221871361725606811637631589633213779473836865906018172583650993664256805046406574352000045752285433990
+
+m = power_mod(c,d,N)
+
+print("Message chiffré: ", m)
+
+
+
+
+#######################################################################################
+
+def discrete_log_exhaustive(g, x, p):
+    # Essayer toutes les valeurs possibles de l'exposant y
+    for y in range(p):
+        if power_mod(g, y, p) == x:
+            return y
+
+    return None  # Pas de solution trouvée
+
+# Exemple d'utilisation
+p = 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397533
+g = 2
+x = 388129625821219829691941955565819605144511792098251764734096459800114779081071643574277074
+
+# Résoudre le logarithme discret de x en base g modulo p
+log_x = discrete_log_exhaustive(g, x, p)
+
+# Afficher le résultat
+print("Le logarithme discret de", x, "en base", g, "modulo", p, "est:", log_x)
+ en version bruteforce debile, instantanné
+
+
+###########################################################################
+
+Pour la q16 quelqu'un a compris c'est quoi r dans la formule de c
+N il est facile à factoriser donc j'ai les deux nombres premiers :
+N =  4734297680650009741
+factors = factor(N)
+print("Facteurs premiers de N :", factors)
+Ioarana — Yesterday at 10:57 PM
+t'as pas besoin de p et q (si c'est pour le calcul de lambda) tu fais lcm(n(n-1))
+
+
+##################################################################
+
+coprt fini deux 
+addition et multiplication
+tout y a un opposer et un inverse, 1/y
+et  aun element neutre
+
+
+#################################################################################
+>>> Decrit moi le concept dde coprime en crypto math
+
+
+
+
+En mathématiques, deux nombres entiers sont dits "coprimaires" (ou "premiers entre eux" ou "relativement premiers") s'ils n'ont aucun diviseur commun autre que 1. Autrement dit, leur plus grand commun diviseur (PGCD) est égal à 1.
+
+Formellement, deux nombres entiers \(a\) et \(b\) sont coprimaires si \(\text{PGCD}(a, b) = 1\). Par exemple, les nombres 15 et 28 sont coprimaires parce que le seul diviseur commun est 1, alors que les nombres 14 et 21 ne le sont pas, car ils ont 7 comme diviseur commun.
+
+Le concept de nombres coprimaires est souvent utilisé en cryptographie et en théorie des nombres. En particulier, dans certains algorithmes de cryptographie, comme le cryptosystème RSA, il est crucial de choisir deux nombres premiers distincts \(p\) et \(q\) qui sont coprimaires. Cela garantit certaines propriétés mathématiques qui rendent le système plus robuste.
+
+Par exemple, dans le cas du RSA, on choisit deux nombres premiers distincts \(p\) et \(q\), puis on calcule leur produit \(n = pq\). La sécurité du RSA repose sur la difficulté de factoriser ce produit \(n\) en ses facteurs premiers \(p\) et \(q\). La condition de coprimalité entre \(p\) et \(q\) est importante pour s'assurer que le PGCD de \(p-1\) et \(q-1\) (qui est utilisé dans le choix de la clé publique et privée) soit égal à 1, facilitant ainsi certaines opérations mathématiques cruciales pour la sécurité du système.
+
+En résumé, le concept de nombres coprimaires est utilisé en crypto-mathématiques pour garantir des propriétés mathématiques spécifiques dans des algorithmes de cryptographie, assurant ainsi la sécurité des systèmes cryptographiques.
+
+
+######################################
+
+
+c'est la méthode pour paillier en général, sans connaître lambda donc modifiée pour notre variante
+sagept 
+Il semble que la formule que vous avez fournie pour le chiffrement soit une variante du cryptosystème de Paillier. Si votre formule est \(c \equiv (1 + mN) \cdot r^N \pmod{N^2}\), nous pouvons ajuster le processus de déchiffrement en conséquence.
+
+Voici comment vous pourriez déchiffrer un message chiffré \(c\) avec cette formule :
+
+### Déchiffrement :
+1. **Calcul de \(\lambda\) :** Comme dans le cryptosystème de Paillier traditionnel, vous aurez besoin de calculer la valeur de la fonction Carmichael de \(N^2\), notée \(\lambda(N^2)\), qui est le plus petit commun multiple de \(N(N-1)\).
+   
+2. **Calcul de \(\mu\) :** Calculez \(\mu \equiv \lambda(N^2)^{-1} \pmod{N}\).
+
+3. **Calcul du chiffré original :** Calculez \(c^\lambda \pmod{N^2}\) pour obtenir \(c^\lambda \mod N^2\).
+
+4. **Calcul du message original :** Calculez \(m \equiv \frac{c^\lambda - 1}{N} \cdot \mu \pmod{N}\).
+
+Ainsi, pour déchiffrer un message chiffré \(c\), vous utiliserez cette formule ajustée pour retrouver le message original \(m\). Assurez-vous d'utiliser les mêmes valeurs pour \(N\) et \(c\) que celles utilisées lors du chiffrement.
+Et la méthode générale: 
+### Génération des clés :
+1. **Choix de deux nombres premiers grands :** Sélectionnez deux nombres premiers distincts \(p\) et \(q\).
+2. **Calcul du module :** Calculez \(n = p \times q\), qui sert de module dans le cryptosystème.
+3. **Calcul de \(\lambda\) :** Calculer la valeur de la fonction Carmichael de \(n\) (aussi appelée \(\lambda(n)\)), qui est le plus petit commun multiple des ordres de \(p-1\) et \(q-1\).
+4. **Choix de \(g\) :** Sélectionnez un \(g\) qui génère un sous-groupe multiplicatif d'ordre \(n^2\) (générateur primitif modulo \(n^2\)).
+
+### Chiffrement :
+1. **Choix du message :** Choisissez un message \(m\) dans l'ensemble des entiers modulo \(n\).
+2. **Calcul de \(r\) :** Choisissez un entier aléatoire \(r\) dans l'ensemble des entiers modulo \(n\).
+3. **Chiffrement :** Calculez le chiffré \(c\) avec la formule \(c = g^m \cdot r^n \mod n^2\).
+
+### Déchiffrement :
+1. **Calcul de \(\mu\) :** Calculez \(\mu = L(g^{\lambda} \mod n^2)^{-1} \mod n\), où \(L(x) = \frac{x-1}{n}\).
+2. **Calcul de \(m\) :** Calculez le message original \(m\) avec la formule \(m = L(c^\lambda \mod n^2) \cdot \mu \mod n\).
+
+
+56 la clee maitre
+
+48 la sous clée
+
+block
+_ecb -> deterministe
+
+flux 
+_cbc
+
+_cfb
+_ofb
+_ctr -> parralélisable
+
+
+
+#########################################################
+
+coprime 
+
+n mathématiques, deux nombres entiers sont dits "coprimaires" (ou "premiers entre eux" ou "relativement premiers") s'ils n'ont aucun diviseur commun autre que 1. Autrement dit, leur plus grand commun diviseur (PGCD) est égal à 1.
+
+Formellement, deux nombres entiers 
+�
+a et 
+�
+b sont coprimaires si 
+PGCD
+(
+�
+,
+�
+)
+=
+1
+PGCD(a,b)=1. Par exemple, les nombres 15 et 28 sont coprimaires parce que le seul diviseur commun est 1, alors que les nombres 14 et 21 ne le sont pas, car ils ont 7 comme diviseur commun.
+
+Le concept de nombres coprimaires est souvent utilisé en cryptographie et en théorie des nombres. En particulier, dans certains algorithmes de cryptographie, comme le cryptosystème RSA, il est crucial de choisir deux nombres premiers distincts 
+�
+p et 
+�
+q qui sont coprimaires. Cela garantit certaines propriétés mathématiques qui rendent le système plus robuste.
+
+Par exemple, dans le cas du RSA, on choisit deux nombres premiers distincts 
+�
+p et 
+�
+q, puis on calcule leur produit 
+�
+=
+�
+�
+n=pq. La sécurité du RSA repose sur la difficulté de factoriser ce produit 
+�
+n en ses facteurs premiers 
+�
+p et 
+�
+q. La condition de coprimalité entre 
+�
+p et 
+�
+q est importante pour s'assurer que le PGCD de 
+�
+−
+1
+p−1 et 
+�
+−
+1
+q−1 (qui est utilisé dans le choix de la clé publique et privée) soit égal à 1, facilitant ainsi certaines opérations mathématiques cruciales pour la sécurité du système.
+
+En résumé, le concept de nombres coprimaires est utilisé en crypto-mathématiques pour garantir des propriétés mathématiques spécifiques dans des algorithmes de cryptographie, assurant ainsi la sécurité des systèmes cryptographiques.
+
+##############################
+
+Le DES (Data Encryption Standard) et l'AES (Advanced Encryption Standard) sont deux algorithmes de chiffrement utilisés en cryptographie. Les tailles de clé, de sous-clé (pour le DES) et de bloc (pour les deux) sont des éléments importants à prendre en compte.
+
+DES (Data Encryption Standard):
+
+Taille de clé maître : Le DES utilise une clé de 56 bits. Cependant, en raison de l'augmentation de la puissance de calcul et des attaques par force brute, le DES est aujourd'hui considéré comme peu sécurisé. Il est recommandé d'utiliser des algorithmes plus modernes avec des clés de taille supérieure.
+
+Taille de sous-clé : Le DES divise la clé maître de 56 bits en 16 sous-clés de 48 bits chacune. Ces sous-clés sont utilisées dans les 16 itérations du processus de chiffrement.
+
+Taille de bloc : Le DES chiffre les données par blocs de 64 bits.
+
+AES (Advanced Encryption Standard):
+
+Taille de clé maître : L'AES prend en charge trois tailles de clé différentes : 128 bits, 192 bits et 256 bits. La sécurité de l'AES est directement liée à la taille de la clé, et il est généralement recommandé d'utiliser des clés de 128 bits au minimum pour des applications sécurisées.
+
+Taille de sous-clé : Contrairement au DES, l'AES n'a pas de notion explicite de sous-clés distinctes. La clé maître est utilisée directement pour générer les clés de tour internes pendant le processus de chiffrement.
+
+Taille de bloc : L'AES chiffre les données par blocs de 128 bits, quelle que soit la taille de la clé.
+
+En résumé, le DES utilise une clé maître de 56 bits, divise en 16 sous-clés de 48 bits chacune, avec des blocs de 64 bits. L'AES, quant à lui, offre des tailles de clé maître de 128, 192 ou 256 bits, sans sous-clés explicites, et fonctionne avec des blocs de 128 bits. L'AES est actuellement considéré comme beaucoup plus sûr que le DES et est largement utilisé pour le chiffrement sécurisé.

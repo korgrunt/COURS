@@ -45,5 +45,5 @@ class FakeDns_Srv(AnsweringMachine):
 
         return response_packet
 
-# propre a scapy ()(), les premier parenthése instancie, les seconde parenthése lance la fonction init
+# propre a scapy ()(), les premier parenthése instancie, les seconde parenthése lance la foncti on init
 FakeDns_Srv()()
