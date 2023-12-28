@@ -1,0 +1,5 @@
+# on Debian
+
+```
+$ sudo apt-get install nvidia-drivers && sudo apt install clang-15 opencl-c-headers clinfo nvidia-libopencl1 && clinfo
+```
