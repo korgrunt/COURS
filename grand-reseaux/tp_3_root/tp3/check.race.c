@@ -677,16 +677,26 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "check.flex.l"
-#line 2 "check.flex.l"
+#line 1 "check.race.l"
+#line 2 "check.race.l"
 #include <stdio.h>
+#include <unistd.h>
+
 char filename[200];
 char interface[100];
 short ip_valide;
 short access_group;
-#line 688 "<stdout>"
 
-#line 690 "<stdout>"
+
+
+
+
+
+
+
+#line 698 "<stdout>"
+
+#line 700 "<stdout>"
 
 #define INITIAL 0
 #define INTERFACE 1
@@ -891,10 +901,10 @@ YY_DECL
 		}
 
 	{
-#line 11 "check.flex.l"
+#line 21 "check.race.l"
 
 
-#line 898 "<stdout>"
+#line 908 "<stdout>"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -951,7 +961,7 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 13 "check.flex.l"
+#line 23 "check.race.l"
 { 
     snprintf(interface,100,"%s",yytext);
     access_group = 0;
@@ -961,7 +971,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 18 "check.flex.l"
+#line 28 "check.race.l"
 ;
 	YY_BREAK
 case 3:
@@ -969,7 +979,7 @@ case 3:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 20 "check.flex.l"
+#line 30 "check.race.l"
 { 
     access_group =1;
 }
@@ -977,7 +987,7 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 23 "check.flex.l"
+#line 33 "check.race.l"
 ;
 	YY_BREAK
 case 5:
@@ -985,20 +995,20 @@ case 5:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 24 "check.flex.l"
+#line 34 "check.race.l"
 {
     if(access_group == 0){
-        printf("%s interface %s missing ip access-group\n", filename, interface);
+        fprintf(yyin, "%s interface %s missing ip access-group\n", filename, interface);
     }
     BEGIN INITIAL;
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 31 "check.flex.l"
+#line 42 "check.race.l"
 ECHO;
 	YY_BREAK
-#line 1002 "<stdout>"
+#line 1012 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(INTERFACE):
 	yyterminate();
@@ -2000,23 +2010,31 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 31 "check.flex.l"
+#line 42 "check.race.l"
+
 
 
 int main(int argc, char **argv ) {
     int i;
 
+    
+    const pid_t id = getpid();
+    
+
+
     for(i=1;i<argc;i++) {
+        sprintf(filename, "./output_process_%i.txt", id);
 
-     strncpy(filename,argv[i],strlen(argv[i]));
+     //strncpy(filename,argv[i],strlen(argv[i]));
 
-    filename[strlen(argv[i])] = '\0';
-    printf("\n\n_____%s", argv[i]);
-    yyin = fopen( argv[i], "r" );
+    //filename[strlen(argv[i])] = '\0';
+    printf(yyin);
+    printf("%s\n", filename);
+    yyin = fopen( filename, "w" );
 
     if (yyin != NULL) {
            yylex();
-         fclose(yyin);
+         //fclose();
      } else {
            perror("FILE OPEN ERROR");
            exit(1);

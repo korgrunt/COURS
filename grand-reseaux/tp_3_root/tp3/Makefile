@@ -5,9 +5,9 @@ RM	= rm -f
 .PHONY: all clean check default generate all
 
 default:
-	@echo "gmake check.flex|check.basic|check.race|generate"
+	@echo "gmake check.flex|check.basic|check.race|generate|count-ip-any.flex|verify-vty.flex|verify-acls.flex"
 
-all: check.flex check.basic check.race
+all: check.flex check.basic check.race count-ip-any.flex verify-vty.flex verify-acls.flex
 
 %:%.l
 	flex -B -t -F $< > $(basename $<).c
@@ -15,7 +15,7 @@ all: check.flex check.basic check.race
 	$(RM) -f lex.yy.c
 
 clean:
-	$(RM) -f *.core check.flex check.basic check.race
+	$(RM) -f *.core check.flex check.basic check.race count-ip-any.flex verify-acls.flex
 	$(RM) -f *.c
 	$(RM) -f zz.output*
 	$(RM) -r conf

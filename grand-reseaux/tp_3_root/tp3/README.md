@@ -1,3 +1,6 @@
+# STEP_0
+Trivial
+
 # STEP_1
 Done, le script "script_copieur.sh" copie le fichier router.unix dans le dossier conf en plusieurs exempleaire: router.unix.X ou x est un numéro incrémenté. 
 
@@ -9,6 +12,7 @@ Done avec le paraléllisme, on vois bien que le temps d'execution est tombé sou
 
 
 # STEP_4
+Oui cela est bien plus rapide, cependant, on vois qu'il y a de la perte car ne nombre de champs traité est de 19813 au lieu de 20k
 
 # STEP_5
 

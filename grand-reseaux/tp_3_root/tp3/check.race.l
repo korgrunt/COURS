@@ -1,9 +1,19 @@
 %{
 #include <stdio.h>
+#include <unistd.h>
+
 char filename[200];
 char interface[100];
 short ip_valide;
 short access_group;
+
+
+
+
+
+
+
+
 %}
 
 %x INTERFACE
@@ -23,30 +33,39 @@ short access_group;
 <INTERFACE>(.|\n)   ;
 <INTERFACE>^!$  {
     if(access_group == 0){
-        printf("%s interface %s missing ip access-group\n", filename, interface);
+        fprintf(yyin, "%s interface %s missing ip access-group\n", filename, interface);
     }
     BEGIN INITIAL;
 }
 
+
 %%
+
 
 int main(int argc, char **argv ) {
     int i;
 
+    
+    const pid_t id = getpid();
+    
+
+
     for(i=1;i<argc;i++) {
+        sprintf(filename, "./output_process_%i.txt", id);
 
-     strncpy(filename,argv[i],strlen(argv[i]));
+     //strncpy(filename,argv[i],strlen(argv[i]));
 
-    filename[strlen(argv[i])] = '\0';
-    printf("\n\n_____%s", argv[i]);
-    yyin = fopen( argv[i], "r" );
+    //filename[strlen(argv[i])] = '\0';
+    printf(yyin);
+    printf("%s\n", filename);
+    yyin = fopen( filename, "w" );
 
     if (yyin != NULL) {
-        yylex();
-        fclose(yyin);
+           yylex();
+         //fclose();
      } else {
-        perror("FILE OPEN ERROR");
-        exit(1);
+           perror("FILE OPEN ERROR");
+           exit(1);
      }
    }
 }

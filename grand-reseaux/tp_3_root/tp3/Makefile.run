@@ -38,3 +38,13 @@ step5:
 	cat tmp/* > zz.output.step5.txt
 	./compliance.sh zz.output.step5.txt
 
+step6:
+	./count-ip-any.flex ./router.unix
+
+step7:
+	./verify-vty.flex ./router.unix
+
+step8:
+	./verify-acls.flex ./router.unix
+
+
